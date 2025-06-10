@@ -91,7 +91,7 @@ submitBtn.addEventListener('click', async () => {
   formData.append('file', currentFile);
 
   try {
-    const response = await fetch('https://ethos-listener.azurewebsites.net/api/file-upload?', {
+    const response = await fetch('https://ethos-listener.azurewebsites.net/api/possum-bingo-upload', {
       method: 'POST',
       body: formData
     });
