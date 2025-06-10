@@ -2,6 +2,8 @@ const csvFileInput = document.getElementById('csvFile');
 const dropZone = document.getElementById('dropZone');
 const feedback = document.getElementById('feedback');
 const submitBtn = document.getElementById('submitBtn');
+const spinner = document.getElementById('spinner');
+const btnText = document.getElementById('btnText');
 
 let parsedData = [];
 let currentFile = null;
@@ -80,6 +82,11 @@ dropZone.addEventListener('drop', (e) => {
 submitBtn.addEventListener('click', async () => {
   if (!currentFile) return;
 
+  // Show spinner and disable button
+  spinner.hidden = false;
+  btnText.textContent = 'Uploading...';
+  submitBtn.disabled = true;
+
   const formData = new FormData();
   formData.append('file', currentFile);
 
@@ -97,5 +104,10 @@ submitBtn.addEventListener('click', async () => {
     }
   } catch (error) {
     feedback.innerHTML += `<p class="error" style="margin-top: 12px;">Upload error: ${error.message}</p>`;
+  } finally {
+    // Reset button state
+    spinner.hidden = true;
+    btnText.textContent = 'Upload';
+    submitBtn.disabled = false;
   }
 });
