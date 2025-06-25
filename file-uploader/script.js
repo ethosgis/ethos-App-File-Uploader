@@ -31,14 +31,17 @@ const validateCSV = (file) => {
       const errors = [];
 
       parsedData.forEach((row, i) => {
-        const timestamp = row.timestamp;
-        const isValidTimestamp = /^\d{4}-\d{2}-\d{2}T\d{2}:\d{2}:\d{2}$/.test(timestamp);
+        const timestamp = row.ImageTimeStamp?.trim();
+        const filepath = row.Image_FilePathway?.trim();
+      
+        if (!filepath) {
+          errors.push(`Row ${i + 1}: Missing 'Image_FilePathway' value.`);
+        }
         if (!timestamp) {
-          errors.push(`Row ${i + 1}: Missing 'timestamp' field.`);
-        } else if (!isValidTimestamp) {
-          errors.push(`Row ${i + 1}: Invalid timestamp format: "${timestamp}"`);
+          errors.push(`Row ${i + 1}: Missing 'ImageTimeStamp' value.`);
         }
       });
+      
 
       if (errors.length > 0) {
         feedback.innerHTML = `<ul class="error">${errors.map(e => `<li>${e}</li>`).join('')}</ul>`;
