@@ -6,17 +6,18 @@ const boatID = params.get('boatid');
 if (boatID) {
   const boatIdInput = document.getElementById('boatid');
   const boatIdDisplay = document.getElementById('boatid-display');
+  const boatIdLabel = document.getElementById('boatid-label');
 
-  if (boatIdInput && boatIdDisplay) {
-    boatIdInput.value = boatID;
-    boatIdInput.style.display = 'none'; // Hide input field
-    boatIdDisplay.textContent = boatID;
-    boatIdDisplay.style.display = 'block'; // Show plain text
+  if (boatIdInput && boatIdDisplay && boatIdLabel) {
+    boatIdInput.style.display = 'none';              // hide input field
+    boatIdLabel.style.display = 'none';              // hide label
+    boatIdDisplay.textContent = `Boat ID: ${boatID}`;
+    boatIdDisplay.style.display = 'block';           // show text
   }
 
   const photoText = document.getElementById('photo-text');
   if (photoText) {
-    photoText.textContent = `Here is the existing boat photo for ${boatID}`;
+    photoText.textContent = `Here is the existing boat photo for ${boatID}.`;
   }
 
   const boatImage = document.getElementById('boat-image');
@@ -58,7 +59,7 @@ document.getElementById('photo-form').addEventListener('submit', async function 
 
   // Build the FormData for POST
   const formData = new FormData();
-  formData.append('FileName', boatID);
+  formData.append('FileName', boatID || document.getElementById('boatid').value); // fallback if boatID not in URL
   formData.append('file', file);
 
   try {
