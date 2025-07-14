@@ -5,17 +5,24 @@ const boatID = params.get('boatid');
 // Populate the form and image preview if boatID exists
 if (boatID) {
   const boatIdInput = document.getElementById('boatid');
-  if (boatIdInput) {
+  const boatIdDisplay = document.getElementById('boatid-display');
+
+  if (boatIdInput && boatIdDisplay) {
     boatIdInput.value = boatID;
-    boatIdInput.readOnly = true;
+    boatIdInput.style.display = 'none'; // Hide input field
+    boatIdDisplay.textContent = boatID;
+    boatIdDisplay.style.display = 'block'; // Show plain text
   }
 
   const photoText = document.getElementById('photo-text');
-  if (photoText) photoText.textContent = `Here is the existing boat photo for ${boatID}`;
+  if (photoText) {
+    photoText.textContent = `Here is the existing boat photo for ${boatID}`;
+  }
 
   const boatImage = document.getElementById('boat-image');
   if (boatImage) {
-    boatImage.src = `https://mvpstorage.blob.core.windows.net/boatphotos/master-${boatID}.jpg`;
+    const timestamp = new Date().getTime();
+    boatImage.src = `https://mvpstorage.blob.core.windows.net/boatphotos/master-${boatID}.jpg?cb=${timestamp}`;
     boatImage.alt = `Boat photo for ${boatID}`;
   }
 }
@@ -51,8 +58,8 @@ document.getElementById('photo-form').addEventListener('submit', async function 
 
   // Build the FormData for POST
   const formData = new FormData();
-  formData.append('FileName', boatID); // use boatID from URL
-  formData.append('file', file);       // actual image file
+  formData.append('FileName', boatID);
+  formData.append('file', file);
 
   try {
     const response = await fetch(
@@ -63,17 +70,16 @@ document.getElementById('photo-form').addEventListener('submit', async function 
       }
     );
 
-   if (response.ok) {
-  alert('Upload successful!');
-  fileInput.value = ''; // reset file input
+    if (response.ok) {
+      fileInput.value = ''; // reset file input
 
-  // Refresh the boat image with cache buster
-  const boatImage = document.getElementById('boat-image');
-  if (boatImage) {
-    const timestamp = new Date().getTime(); // Unique value to break cache
-    boatImage.src = `https://mvpstorage.blob.core.windows.net/boatphotos/master-${boatID}.jpg?cb=${timestamp}`;
-  }
-} else {
+      // Refresh the boat image with cache buster
+      const boatImage = document.getElementById('boat-image');
+      if (boatImage) {
+        const timestamp = new Date().getTime();
+        boatImage.src = `https://mvpstorage.blob.core.windows.net/boatphotos/master-${boatID}.jpg?cb=${timestamp}`;
+      }
+    } else {
       const errText = await response.text();
       errorMsg.textContent = `Upload failed: ${errText}`;
     }

@@ -12,8 +12,11 @@
   <img id="boat-image" style="max-width: 300px; display: block; margin-bottom: 20px;" alt="Boat photo" />
 
   <form id="photo-form">
-  <label for="boatid">Boat ID:</label>
-  <input type="text" id="boatid" name="BoatID"><br><br>
+    <div id="boatid-container">
+    <label for="boatid">Boat ID:</label>
+    <input type="text" id="boatid" name="BoatID">
+    <p id="boatid-display" style="display: none; margin: 8px 0;"></p>
+  </div>
 
   <label for="photo">Upload New Photo (.jpg/.jpeg, max 4MB):</label>
   <input type="file" id="photo" name="photo" accept=".jpg, .jpeg"><br><br>
