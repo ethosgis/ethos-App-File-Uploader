@@ -2,24 +2,83 @@
 const params = new URLSearchParams(window.location.search);
 const boatID = params.get('boatid');
 
-// If boatID exists, populate form and image/text
+// Populate the form and image preview if boatID exists
 if (boatID) {
-  // Fill input
   const boatIdInput = document.getElementById('boatid');
   if (boatIdInput) {
     boatIdInput.value = boatID;
+    boatIdInput.readOnly = true;
   }
 
-  // Update photo text
   const photoText = document.getElementById('photo-text');
-  if (photoText) {
-    photoText.textContent = `Here is the existing boat photo for ${boatID}`;
-  }
+  if (photoText) photoText.textContent = `Here is the existing boat photo for ${boatID}`;
 
-  // Update image source
   const boatImage = document.getElementById('boat-image');
   if (boatImage) {
     boatImage.src = `https://mvpstorage.blob.core.windows.net/boatphotos/master-${boatID}.jpg`;
     boatImage.alt = `Boat photo for ${boatID}`;
   }
 }
+
+// Form submit handler
+document.getElementById('photo-form').addEventListener('submit', async function (e) {
+  e.preventDefault(); // Stop default form submission
+
+  const fileInput = document.getElementById('photo');
+  const errorMsg = document.getElementById('error-msg');
+  const file = fileInput.files[0];
+
+  errorMsg.textContent = ''; // Clear previous errors
+
+  // Validate
+  if (!file) {
+    errorMsg.textContent = 'Please select a photo file to upload.';
+    return;
+  }
+
+  const isJpg = /\.(jpg|jpeg)$/i.test(file.name);
+  const isTooLarge = file.size > 4 * 1024 * 1024; // 4MB
+
+  if (!isJpg) {
+    errorMsg.textContent = 'Only .jpg or .jpeg files are allowed.';
+    return;
+  }
+
+  if (isTooLarge) {
+    errorMsg.textContent = 'File size must not exceed 4MB.';
+    return;
+  }
+
+  // Build the FormData for POST
+  const formData = new FormData();
+  formData.append('FileName', boatID); // use boatID from URL
+  formData.append('file', file);       // actual image file
+
+  try {
+    const response = await fetch(
+      'https://mvp-listener-adgmc5d7f7hxaqbp.australiaeast-01.azurewebsites.net/api/master-photo-upload',
+      {
+        method: 'POST',
+        body: formData
+      }
+    );
+
+   if (response.ok) {
+  alert('Upload successful!');
+  fileInput.value = ''; // reset file input
+
+  // Refresh the boat image with cache buster
+  const boatImage = document.getElementById('boat-image');
+  if (boatImage) {
+    const timestamp = new Date().getTime(); // Unique value to break cache
+    boatImage.src = `https://mvpstorage.blob.core.windows.net/boatphotos/master-${boatID}.jpg?cb=${timestamp}`;
+  }
+} else {
+      const errText = await response.text();
+      errorMsg.textContent = `Upload failed: ${errText}`;
+    }
+  } catch (err) {
+    console.error(err);
+    errorMsg.textContent = 'An error occurred during upload. Please try again.';
+  }
+});
