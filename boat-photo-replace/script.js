@@ -15,9 +15,9 @@ if (boatID) {
     boatIdDisplay.style.display = 'block';           // show text
   }
 
-  const photoText = document.getElementById('photo-text');
-  if (photoText) {
-    photoText.textContent = `Here is the existing boat photo for ${boatID}.`;
+  const photoTextBoatId = document.getElementById('photo-boatid');
+  if (photoTextBoatId) {
+    photoTextBoatId.textContent = boatID;
   }
 
   const boatImage = document.getElementById('boat-image');
@@ -80,6 +80,12 @@ document.getElementById('photo-form').addEventListener('submit', async function 
         const timestamp = new Date().getTime();
         boatImage.src = `https://mvpstorage.blob.core.windows.net/boatphotos/master-${boatID}.jpg?cb=${timestamp}`;
       }
+
+      // Show toaster notification
+      const toast = document.getElementById('toast');
+      if (toast) {
+        toast.style.display = 'block';
+      }
     } else {
       const errText = await response.text();
       errorMsg.textContent = `Upload failed: ${errText}`;
@@ -89,3 +95,14 @@ document.getElementById('photo-form').addEventListener('submit', async function 
     errorMsg.textContent = 'An error occurred during upload. Please try again.';
   }
 });
+
+// Toast close button handler
+const toastClose = document.getElementById('toast-close');
+if (toastClose) {
+  toastClose.addEventListener('click', () => {
+    const toast = document.getElementById('toast');
+    if (toast) {
+      toast.style.display = 'none';
+    }
+  });
+}
