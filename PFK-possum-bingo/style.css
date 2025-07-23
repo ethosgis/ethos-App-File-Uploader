@@ -1,0 +1,128 @@
+/* General Page Styling */
+body {
+  font-family: 'Segoe UI', Roboto, Arial, sans-serif;
+  background-color: #f3f4f6;
+  padding: 40px;
+  display: flex;
+  justify-content: center;
+  align-items: start;
+  min-height: 100vh;
+  margin: 0;
+}
+
+/* Container Box */
+.container {
+  background-color: #ffffff;
+  padding: 24px;
+  border-radius: 12px;
+  box-shadow: 0 10px 25px rgba(0, 0, 0, 0.05);
+  width: 100%;
+  max-width: 600px;
+  box-sizing: border-box;
+}
+
+/* Heading */
+.container h1 {
+  margin-bottom: 20px;
+  font-size: 24px;
+  font-weight: 600;
+  color: #111827;
+}
+
+/* File Input */
+input[type="file"] {
+  display: block;
+  width: 100%;
+  margin-bottom: 16px;
+  font-size: 14px;
+}
+
+/* Drop Zone */
+#dropZone {
+  border: 2px dashed #d1d5db;
+  padding: 28px;
+  text-align: center;
+  color: #6b7280;
+  background-color: #f9fafb;
+  border-radius: 8px;
+  margin-bottom: 16px;
+  transition: all 0.2s ease-in-out;
+  font-size: 14px;
+}
+
+#dropZone.dragover {
+  background-color: #eff6ff;
+  border-color: #3b82f6;
+  color: #1e3a8a;
+}
+
+/* Feedback Messages */
+#feedback {
+  font-size: 14px;
+  margin-bottom: 16px;
+}
+
+#feedback ul {
+  color: #dc2626;
+  padding-left: 20px;
+  margin: 0;
+}
+
+#feedback p {
+  margin: 0;
+}
+
+#feedback p.success {
+  color: #059669;
+}
+
+#feedback p.error {
+  color: #dc2626;
+}
+
+#feedback p.notice {
+  color: #2563eb;
+  margin-top: 8px;
+}
+
+/* Submit Button */
+button {
+  background-color: #3b82f6;
+  color: #ffffff;
+  border: none;
+  padding: 12px 20px;
+  font-size: 15px;
+  border-radius: 6px;
+  cursor: pointer;
+  transition: background-color 0.2s ease;
+}
+
+button:hover {
+  background-color: #2563eb;
+}
+
+button:disabled {
+  background-color: #93c5fd;
+  cursor: not-allowed;
+}
+
+.spinner {
+  width: 16px;
+  height: 16px;
+  border: 3px solid #ffffff;
+  border-top: 3px solid transparent;
+  border-radius: 50%;
+  margin-right: 8px;
+  vertical-align: middle;
+  animation: spin 0.6s linear infinite;
+}
+
+/* Respect the hidden attribute */
+.spinner[hidden] {
+  display: none !important;
+}
+
+@keyframes spin {
+  0%   { transform: rotate(0deg); }
+  100% { transform: rotate(360deg); }
+}
