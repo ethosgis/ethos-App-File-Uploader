@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <title>Boat Photo Replace</title>
+  <link rel="stylesheet" href="style.css" />
+
+</head>
+
+<body>
+  <p id="photo-text"></p>
+  <img id="boat-image" style="max-width: 300px; display: block; margin-bottom: 20px;" alt="Boat photo" />
+
+  <form id="photo-form">
+    <div id="boatid-container">
+      <label for="boatid" id="boatid-label">Boat ID:</label>
+      <input type="text" id="boatid" name="BoatID" />
+      <p id="boatid-display" style="display: none;"></p>
+    </div>
+
+
+    <label for="photo">Upload New Photo (.jpg/.jpeg, max 4MB):</label>
+    <input type="file" id="photo" name="photo" accept=".jpg, .jpeg"><br><br>
+
+    <div id="error-msg" style="color: red; font-weight: bold;"></div>
+
+    <input type="submit" value="Submit">
+  </form>
+<div id="toast" style="display: none;">
+  <div id="toast-content">
+    <p>
+      ✅ The photo for this boat has been replaced.<br>
+      You may need to <strong>clear your browser cache</strong> to see the updated photo on the website.
+    </p>
+    <button id="toast-close">OK</button>
+  </div>
+</div>
+
+  <script src="script.js"></script>
+</body>
+
+</html>
