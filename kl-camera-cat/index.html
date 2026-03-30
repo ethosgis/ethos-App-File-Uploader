@@ -1,0 +1,36 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>KL Camera Cat</title>
+  <link rel="stylesheet" href="style.css" />
+  <script src="https://cdn.jsdelivr.net/npm/papaparse@5.4.1/papaparse.min.js"></script>
+  <script defer src="script.js"></script>
+</head>
+<body>
+  <div class="container">
+    <h1>KL Camera Cat</h1>
+
+    <label for="emailInput">Email address</label>
+    <input type="email" id="emailInput" placeholder="name@example.com" autocomplete="email" />
+    <div id="emailFeedback"></div>
+
+    <!-- File Input -->
+    <input type="file" id="csvFile" accept=".csv" />
+
+    <!-- Drop Zone -->
+    <div id="dropZone">Drag and drop a CSV file here</div>
+
+    <!-- Feedback -->
+    <div id="feedback"></div>
+
+    <!-- Submit Button -->
+<button id="submitBtn" disabled>
+  <span class="spinner" id="spinner" hidden></span>
+  <span id="btnText">Upload</span>
+</button>
+
+  </div>
+</body>
+</html>
