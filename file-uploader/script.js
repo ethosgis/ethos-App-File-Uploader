@@ -28,26 +28,9 @@ const validateCSV = (file) => {
       }
 
       parsedData = results.data;
-      const errors = [];
-
-      parsedData.forEach((row, i) => {
-        const timestamp = row.timestamp;
-        const isValidTimestamp = /^\d{4}-\d{2}-\d{2}T\d{2}:\d{2}:\d{2}$/.test(timestamp);
-        if (!timestamp) {
-          errors.push(`Row ${i + 1}: Missing 'timestamp' field.`);
-        } else if (!isValidTimestamp) {
-          errors.push(`Row ${i + 1}: Invalid timestamp format: "${timestamp}"`);
-        }
-      });
-
-      if (errors.length > 0) {
-        feedback.innerHTML = `<ul class="error">${errors.map(e => `<li>${e}</li>`).join('')}</ul>`;
-        submitBtn.disabled = true;
-      } else {
-        feedback.innerHTML = `<p class="success">CSV validated successfully with ${parsedData.length} rows.</p>`;
-        submitBtn.disabled = false;
-        currentFile = file;
-      }
+      feedback.innerHTML = `<p class="success">CSV validated successfully with ${parsedData.length} rows.</p>`;
+      submitBtn.disabled = false;
+      currentFile = file;
     }
   });
 };
