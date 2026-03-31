@@ -12,13 +12,25 @@ let currentFile = null;
 const MAX_FILE_SIZE_MB = 10;
 const EMAIL_REGEX = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
 
+const buildLocalTimestamp = () => {
+  const now = new Date();
+  const year = now.getFullYear();
+  const month = String(now.getMonth() + 1).padStart(2, '0');
+  const day = String(now.getDate()).padStart(2, '0');
+  const hours = String(now.getHours()).padStart(2, '0');
+  const minutes = String(now.getMinutes()).padStart(2, '0');
+  const seconds = String(now.getSeconds()).padStart(2, '0');
+  return `${year}${month}${day}_${hours}${minutes}${seconds}`;
+};
+
 const buildUploadFileName = (email, originalName) => {
   const sanitizedEmail = email
     .trim()
     .replace(/@/g, '_at_')
     .replace(/[^a-zA-Z0-9._-]/g, '_');
   const sanitizedOriginalName = originalName.replace(/[\\/:*?"<>|]/g, '_');
-  return `KICamCat_${sanitizedEmail}_${sanitizedOriginalName}`;
+  const timestamp = buildLocalTimestamp();
+  return `KICamCat_${sanitizedEmail}_${timestamp}_${sanitizedOriginalName}`;
 };
 
 const updateSubmitState = () => {
@@ -50,6 +62,13 @@ const validateEmail = () => {
 };
 
 const validateCSV = (file) => {
+  if (!file.name.toLowerCase().endsWith('.csv')) {
+    feedback.innerHTML = '<p class="error">Invalid file type. Please upload a .csv file.</p>';
+    currentFile = null;
+    updateSubmitState();
+    return;
+  }
+
   if (file.size > MAX_FILE_SIZE_MB * 1024 * 1024) {
     feedback.innerHTML = `<p class="error">File too large. Maximum allowed size is ${MAX_FILE_SIZE_MB}MB.</p>`;
     currentFile = null;
@@ -70,6 +89,14 @@ const validateCSV = (file) => {
       }
 
       parsedData = results.data;
+      const hasFileIdField = results.meta.fields?.some((field) => field.toLowerCase() === 'fileid');
+      if (!hasFileIdField) {
+        feedback.innerHTML = `<p class="error">Missing required field: fileid.</p>`;
+        currentFile = null;
+        updateSubmitState();
+        return;
+      }
+
       feedback.innerHTML = `<p class="success">CSV validated successfully with ${parsedData.length} rows.</p>`;
       currentFile = file;
       updateSubmitState();
